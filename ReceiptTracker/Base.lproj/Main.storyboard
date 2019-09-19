@@ -23,19 +23,19 @@
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home Depot" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bFn-WG-hL6">
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home Depot" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bFn-WG-hL6">
                                             <rect key="frame" x="20" y="9" width="111" height="24"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$42.65" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U33-Vy-5Uq">
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="12" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$42.65" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U33-Vy-5Uq">
                                             <rect key="frame" x="338" y="24.5" width="56" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="08/01/2019" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yET-Ty-DaX">
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="08/01/2019" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yET-Ty-DaX">
                                             <rect key="frame" x="20" y="38" width="87.5" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -71,6 +71,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="JSN-kQ-9ZH">
                             <connections>
                                 <action selector="addReceipt:" destination="Y0Q-ua-Za6" id="shd-8t-FJR"/>
+                                <segue destination="aJf-lS-x9L" kind="show" identifier="AddReceipt" id="PrR-JN-9Y4"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -79,10 +80,10 @@
             </objects>
             <point key="canvasLocation" x="1142.0289855072465" y="123.88392857142857"/>
         </scene>
-        <!--Add Receipt View Controller-->
+        <!--Receipt Detail View Controller-->
         <scene sceneID="jH4-lA-cBd">
             <objects>
-                <viewController id="aJf-lS-x9L" customClass="AddReceiptViewController" customModule="ReceiptTracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="aJf-lS-x9L" customClass="ReceiptDetailViewController" customModule="ReceiptTracker" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Kdu-jV-YYf">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -184,6 +185,18 @@
                             <outletCollection property="gestureRecognizers" destination="0uZ-ur-8S3" appends="YES" id="aRU-tv-Jos"/>
                         </connections>
                     </view>
+                    <navigationItem key="navigationItem" id="lSn-Iz-TNp">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="YhX-AQ-Gkj">
+                            <connections>
+                                <action selector="cancel" destination="aJf-lS-x9L" id="Cmk-lJ-P9F"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="5mt-px-zl5">
+                            <connections>
+                                <action selector="done" destination="aJf-lS-x9L" id="ysy-Wg-U8t"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="entryCreatedLabel" destination="H53-Ge-0No" id="0E2-xV-Yza"/>
                         <outlet property="purchaseDateTextField" destination="O1e-LG-9da" id="FF7-9G-Cdk"/>
@@ -221,4 +234,7 @@
             <point key="canvasLocation" x="231.8840579710145" y="123.88392857142857"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="PrR-JN-9Y4"/>
+    </inferredMetricsTieBreakers>
 </document>

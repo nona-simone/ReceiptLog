@@ -8,7 +8,13 @@
 
 import UIKit
 
-class AddReceiptViewController: UIViewController, UINavigationControllerDelegate {
+protocol receiptDetailViewControllerDelegate: class {
+    func receiptDetailViewControllerDidCancel(_ controller: ReceiptDetailViewController)
+    func receiptDetailViewController(_ controller: ReceiptDetailViewController, didFinishEditing receipt: Receipt)
+    func receiptDetailViewController(_ controller: ReceiptDetailViewController, didFinishAdding receipt: Receipt)
+}
+
+class ReceiptDetailViewController: UIViewController, UINavigationControllerDelegate {
 
     //    TODO: - Add OCR capabilities to convert image to text
     //    TODO: - Get business api to add store number/address data if available
@@ -30,6 +36,9 @@ class AddReceiptViewController: UIViewController, UINavigationControllerDelegate
             navigationItem.title = retailer.storeName
         }
     }
+    
+    weak var delegate: receiptDetailViewControllerDelegate?
+    var receiptToEdit: Receipt?
     
 //    var receiptImage: ReceiptImage!
     
@@ -54,12 +63,12 @@ class AddReceiptViewController: UIViewController, UINavigationControllerDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        userInput()
+//        userInput()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        userInput()
+//        userInput()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -67,10 +76,30 @@ class AddReceiptViewController: UIViewController, UINavigationControllerDelegate
         //get rid of first responder
         view.endEditing(true)
         //save receipt
-        setReceiptValues()
+//        setReceiptValues()
     }
     
-    //    MARK: User Input
+    //    MARK:- IBAction
+    @IBAction func cancel() {
+        delegate?.receiptDetailViewControllerDidCancel(self)
+    }
+    
+    @IBAction func done() {
+        if let savedReceipt = receiptToEdit {
+            retailerTextField.text = savedReceipt.storeName
+            purchaseTotalTextField.text = numFormatter.string(from: savedReceipt.purchaseAmount as NSNumber) ?? ""
+            purchaseDateTextField.text = dateFormatter.string(from: savedReceipt.dateOfPurchase)
+            entryCreatedLabel.text = "Entry created \(dateFormatter.string(from: savedReceipt.dateOfCreation))"
+            delegate?.receiptDetailViewController(self, didFinishAdding: savedReceipt)
+        } else {
+           if let newReceipt = retailer {
+                setReceiptValues(newReceipt)
+                delegate?.receiptDetailViewController(self, didFinishAdding: newReceipt)
+            }
+        }
+    }
+    
+    //    MARK:- User Input
     
     func userInput() {
         //store name - empty textfield of default value
@@ -84,15 +113,11 @@ class AddReceiptViewController: UIViewController, UINavigationControllerDelegate
         entryCreatedLabel.text = "Entry created \(dateFormatter.string(from: retailer.dateOfCreation))"
     }
     
-    func setReceiptValues() {
+    func setReceiptValues(_ receipt: Receipt) {
         if let purchaseAmt = purchaseTotalTextField.text, let value = numFormatter.number(from: purchaseAmt), let storeName = retailerTextField.text, let purchaseDate = purchaseDateTextField.text, let date =  dateFormatter.date(from: "\(purchaseDate)") {
-            retailer.purchaseAmount = value.doubleValue
-            retailer.storeName = storeName
-            retailer.dateOfPurchase = date
-        } else {
-            retailer.purchaseAmount = retailer.purchaseAmount
-            retailer.storeName = retailer.storeName
-            retailer.dateOfPurchase = retailer.dateOfPurchase
+            receipt.purchaseAmount = value.doubleValue
+            receipt.storeName = storeName
+            receipt.dateOfPurchase = date
         }
     }
     
@@ -111,7 +136,7 @@ class AddReceiptViewController: UIViewController, UINavigationControllerDelegate
 
 
 
-extension AddReceiptViewController: UITextFieldDelegate {
+extension ReceiptDetailViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -125,7 +150,7 @@ extension AddReceiptViewController: UITextFieldDelegate {
 }
 
 
-extension AddReceiptViewController: UIImagePickerControllerDelegate {
+extension ReceiptDetailViewController: UIImagePickerControllerDelegate {
     
     //    TODO: - Refactor to make source only available for camera
     @IBAction func captureReceiptImage(_ sender: Any) {

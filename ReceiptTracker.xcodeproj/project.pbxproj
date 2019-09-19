@@ -18,7 +18,7 @@
 		7D8337582319698500CC9BA6 /* ReceiptsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8337572319698500CC9BA6 /* ReceiptsTableViewController.swift */; };
 		7D83375A2319A5EA00CC9BA6 /* Receipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8337592319A5EA00CC9BA6 /* Receipt.swift */; };
 		7D83375E2319A84800CC9BA6 /* ReceiptStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D83375D2319A84800CC9BA6 /* ReceiptStore.swift */; };
-		7D8337602319AA1200CC9BA6 /* AddReceiptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D83375F2319AA1200CC9BA6 /* AddReceiptViewController.swift */; };
+		7D8337602319AA1200CC9BA6 /* ReceiptDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D83375F2319AA1200CC9BA6 /* ReceiptDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +56,7 @@
 		7D8337572319698500CC9BA6 /* ReceiptsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptsTableViewController.swift; sourceTree = "<group>"; };
 		7D8337592319A5EA00CC9BA6 /* Receipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Receipt.swift; sourceTree = "<group>"; };
 		7D83375D2319A84800CC9BA6 /* ReceiptStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptStore.swift; sourceTree = "<group>"; };
-		7D83375F2319AA1200CC9BA6 /* AddReceiptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReceiptViewController.swift; sourceTree = "<group>"; };
+		7D83375F2319AA1200CC9BA6 /* ReceiptDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,7 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				7D8337572319698500CC9BA6 /* ReceiptsTableViewController.swift */,
-				7D83375F2319AA1200CC9BA6 /* AddReceiptViewController.swift */,
+				7D83375F2319AA1200CC9BA6 /* ReceiptDetailViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -296,7 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D83375E2319A84800CC9BA6 /* ReceiptStore.swift in Sources */,
-				7D8337602319AA1200CC9BA6 /* AddReceiptViewController.swift in Sources */,
+				7D8337602319AA1200CC9BA6 /* ReceiptDetailViewController.swift in Sources */,
 				7D83375A2319A5EA00CC9BA6 /* Receipt.swift in Sources */,
 				7D8337582319698500CC9BA6 /* ReceiptsTableViewController.swift in Sources */,
 				7D37BF122320CA7300DB6A8B /* ReceiptTableViewCell.swift in Sources */,

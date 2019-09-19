@@ -14,7 +14,7 @@ import UIKit
 // TODO: - Add sections to categorize month and/ year
 
 
-class ReceiptsTableViewController: UITableViewController {
+class ReceiptsTableViewController: UITableViewController, receiptDetailViewControllerDelegate {
     
     var receipts: ReceiptStore!
     
@@ -24,6 +24,7 @@ class ReceiptsTableViewController: UITableViewController {
         super.viewDidLoad()
         
         //view setup
+        navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.leftBarButtonItem = self.editButtonItem
         tableView.rowHeight = UITableView.automaticDimension
     }
@@ -49,22 +50,7 @@ class ReceiptsTableViewController: UITableViewController {
         
         cell.styleLabels()
         let retailer = receipts.allReceipts[indexPath.row]
-        
-        //store name
-        cell.storeNameLabel.text = retailer.storeName
-        
-        //receipt date
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-dd-yyyy"
-        let purchaseDate = dateFormatter.string(from: retailer.dateOfPurchase)
-        cell.purchaseDateLabel.text = "Purchased \(purchaseDate)"
-        
-        //purchase amount
-        let numFormatter = NumberFormatter()
-        numFormatter.minimumFractionDigits = 2
-        numFormatter.numberStyle = .decimal
-        let purchaseAmt = NSNumber(floatLiteral: retailer.purchaseAmount)
-        cell.purchaseAmtLabel.text = "$" + numFormatter.string(from: purchaseAmt)!
+        configureItems(for: cell, with: retailer)
         
         return cell
     }
@@ -75,28 +61,67 @@ class ReceiptsTableViewController: UITableViewController {
         return 65
     }
     
-    //    MARK: - Receipt Methods
+    //    MARK:- Receipt Methods
     
-    @IBAction func addReceipt(_ sender: Any) {
-        createReceipt()
-    }
-    
-    func createReceipt() {
-        let newReceipt = receipts.createReceipt()
+    func createReceipt(_ receipt: Receipt) {
+        var newReceipt = receipts.createReceipt()
+        newReceipt = receipt
         if let index = receipts.allReceipts.firstIndex(of: newReceipt) {
             let indexPath = IndexPath(row: index, section: 0)
             tableView.insertRows(at: [indexPath], with: .automatic)
         }
     }
     
+    func configureItems(for cell: UITableViewCell, with receipt: Receipt) {
+        //store name 10
+        let storeNameLabel = cell.viewWithTag(10) as! UILabel
+        storeNameLabel.text = receipt.storeName
+        //date of purchase 11
+        let purchaseDateLabel = cell.viewWithTag(11) as! UILabel
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy"
+        let purchaseDate = dateFormatter.string(from: receipt.dateOfPurchase)
+        purchaseDateLabel.text = "Purchased \(purchaseDate)"
+        //amount paid 12
+        let purchaseAmtLabel = cell.viewWithTag(12) as! UILabel
+        let numFormatter = NumberFormatter()
+        numFormatter.minimumFractionDigits = 2
+        numFormatter.numberStyle = .decimal
+        let purchaseAmt = NSNumber(floatLiteral: receipt.purchaseAmount)
+        purchaseAmtLabel.text = "$" + numFormatter.string(from: purchaseAmt)!
+    }
+    
+    //    MARK:- ReceiptDetailViewControllerDelegate
+    
+    func receiptDetailViewControllerDidCancel(_ controller: ReceiptDetailViewController) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func receiptDetailViewController(_ controller: ReceiptDetailViewController, didFinishEditing receipt: Receipt) {
+        if let index = receipts.allReceipts.index(of: receipt) {
+            let indexPath = IndexPath(row: index, section: 0)
+            if let cell = tableView.cellForRow(at: indexPath) {
+                configureItems(for: cell, with: receipt)
+            }
+        }
+    }
+    
+    func receiptDetailViewController(_ controller: ReceiptDetailViewController, didFinishAdding receipt: Receipt) {
+        createReceipt(receipt)
+        navigationController?.popViewController(animated: true)
+    }
+    
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "editReceipt" {
-            let destinationVC = segue.destination as! AddReceiptViewController
+        if segue.identifier == "AddReceipt" {
+            let destinationVC = segue.destination as! ReceiptDetailViewController
+            destinationVC.delegate = self
+        } else if segue.identifier == "editReceipt" {
+            let destinationVC = segue.destination as! ReceiptDetailViewController
             if let row = tableView.indexPathForSelectedRow?.row {
                 let receipt = receipts.allReceipts[row]
-                destinationVC.retailer = receipt
+                destinationVC.receiptToEdit = receipt
             }
         }
     }
