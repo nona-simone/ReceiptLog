@@ -15,7 +15,7 @@ protocol receiptDetailViewControllerDelegate: class {
 }
 
 class ReceiptDetailViewController: UIViewController, UINavigationControllerDelegate {
-
+    
     //    TODO: - Add OCR capabilities to convert image to text
     //    TODO: - Get business api to add store number/address data if available
     //    TODO: - Add camera overlay to ensure receipt is captured correctly
@@ -31,16 +31,12 @@ class ReceiptDetailViewController: UIViewController, UINavigationControllerDeleg
     @IBOutlet weak var receiptImageView: UIImageView!
     
     //    property observer for nav title
-    var retailer: Receipt! {
-        didSet {
-            navigationItem.title = retailer.storeName
-        }
-    }
+    var retailer: Receipt?
     
     weak var delegate: receiptDetailViewControllerDelegate?
     var receiptToEdit: Receipt?
     
-//    var receiptImage: ReceiptImage!
+    //    var receiptImage: ReceiptImage!
     
     //format price and date
     let numFormatter: NumberFormatter = {
@@ -63,20 +59,22 @@ class ReceiptDetailViewController: UIViewController, UINavigationControllerDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        userInput()
+        view.becomeFirstResponder()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        userInput()
+        //FIXME: - Error handling
+        if receiptToEdit != nil {
+            addUserInput()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         //get rid of first responder
         view.endEditing(true)
-        //save receipt
-//        setReceiptValues()
+        
     }
     
     //    MARK:- IBAction
@@ -86,41 +84,21 @@ class ReceiptDetailViewController: UIViewController, UINavigationControllerDeleg
     
     @IBAction func done() {
         if let savedReceipt = receiptToEdit {
-            retailerTextField.text = savedReceipt.storeName
-            purchaseTotalTextField.text = numFormatter.string(from: savedReceipt.purchaseAmount as NSNumber) ?? ""
-            purchaseDateTextField.text = dateFormatter.string(from: savedReceipt.dateOfPurchase)
-            entryCreatedLabel.text = "Entry created \(dateFormatter.string(from: savedReceipt.dateOfCreation))"
-            delegate?.receiptDetailViewController(self, didFinishAdding: savedReceipt)
+            saveValues(savedReceipt)
+            print(savedReceipt.storeName)
+            delegate?.receiptDetailViewController(self, didFinishEditing: savedReceipt)
+            
         } else {
-           if let newReceipt = retailer {
-                setReceiptValues(newReceipt)
-                delegate?.receiptDetailViewController(self, didFinishAdding: newReceipt)
-            }
+            let newReceipt = Receipt(storeName: "", purchaseAmount: 0, dateOfPurchase: Date() )
+//            if let newReceipt = retailer {
+            saveValues(newReceipt)
+            delegate?.receiptDetailViewController(self, didFinishAdding: newReceipt)
+            
+//                        }
         }
     }
     
-    //    MARK:- User Input
-    
-    func userInput() {
-        //store name - empty textfield of default value
-        retailerTextField.text == "Edit Store" ? (retailerTextField.text = "") : (retailerTextField.text = retailer.storeName)
-        
-        //purchase amount - empty textfield of default value
-        purchaseTotalTextField.text == "0.00" ? (purchaseTotalTextField.text = "") : (purchaseTotalTextField.text = numFormatter.string(from: retailer.purchaseAmount as NSNumber) ?? "")
-        
-        //dates
-        purchaseDateTextField.text = dateFormatter.string(from: retailer.dateOfPurchase)
-        entryCreatedLabel.text = "Entry created \(dateFormatter.string(from: retailer.dateOfCreation))"
-    }
-    
-    func setReceiptValues(_ receipt: Receipt) {
-        if let purchaseAmt = purchaseTotalTextField.text, let value = numFormatter.number(from: purchaseAmt), let storeName = retailerTextField.text, let purchaseDate = purchaseDateTextField.text, let date =  dateFormatter.date(from: "\(purchaseDate)") {
-            receipt.purchaseAmount = value.doubleValue
-            receipt.storeName = storeName
-            receipt.dateOfPurchase = date
-        }
-    }
-    
+   
     @IBAction func enterDate(_ sender: UITextField) {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
@@ -132,9 +110,26 @@ class ReceiptDetailViewController: UIViewController, UINavigationControllerDeleg
         purchaseDateTextField.text = dateFormatter.string(from: sender.date)
     }
     
+    //    MARK:- User Input
+    
+    func addUserInput() {
+        if let savedReceipt = receiptToEdit {
+            retailerTextField.text = savedReceipt.storeName
+            purchaseTotalTextField.text = numFormatter.string(from: savedReceipt.purchaseAmount as NSNumber) ?? ""
+            purchaseDateTextField.text = dateFormatter.string(from: savedReceipt.dateOfPurchase)
+            entryCreatedLabel.text = "Entry created \(dateFormatter.string(from: savedReceipt.dateOfCreation))"
+        }
+    }
+    
+    func saveValues(_ receipt: Receipt) {
+        if let purchaseAmt = purchaseTotalTextField.text, let value = numFormatter.number(from: purchaseAmt), let storeName = retailerTextField.text, let purchaseDate = purchaseDateTextField.text, let date =  dateFormatter.date(from: "\(purchaseDate)") {
+            receipt.purchaseAmount = value.doubleValue
+            receipt.storeName = storeName
+            receipt.dateOfPurchase = date
+        }
+    }
+    
 }
-
-
 
 extension ReceiptDetailViewController: UITextFieldDelegate {
     
@@ -183,6 +178,6 @@ extension ReceiptDetailViewController: UIImagePickerControllerDelegate {
     @IBAction func deleteChoseImage(sender: UIBarButtonItem) {
         deleteImage()
     }
-
-
+    
+    
 }

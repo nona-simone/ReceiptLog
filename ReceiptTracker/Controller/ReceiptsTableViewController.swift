@@ -64,12 +64,15 @@ class ReceiptsTableViewController: UITableViewController, receiptDetailViewContr
     //    MARK:- Receipt Methods
     
     func createReceipt(_ receipt: Receipt) {
-        var newReceipt = receipts.createReceipt()
-        newReceipt = receipt
+        let newReceipt = receipts.createReceipt(receipt)
         if let index = receipts.allReceipts.firstIndex(of: newReceipt) {
             let indexPath = IndexPath(row: index, section: 0)
+            if let cell = tableView.cellForRow(at: indexPath) {
+                configureItems(for: cell, with: receipt)
+            }
             tableView.insertRows(at: [indexPath], with: .automatic)
         }
+        
     }
     
     func configureItems(for cell: UITableViewCell, with receipt: Receipt) {
@@ -104,6 +107,7 @@ class ReceiptsTableViewController: UITableViewController, receiptDetailViewContr
                 configureItems(for: cell, with: receipt)
             }
         }
+        navigationController?.popViewController(animated: true)
     }
     
     func receiptDetailViewController(_ controller: ReceiptDetailViewController, didFinishAdding receipt: Receipt) {
@@ -117,8 +121,9 @@ class ReceiptsTableViewController: UITableViewController, receiptDetailViewContr
         if segue.identifier == "AddReceipt" {
             let destinationVC = segue.destination as! ReceiptDetailViewController
             destinationVC.delegate = self
-        } else if segue.identifier == "editReceipt" {
+        } else if segue.identifier == "EditReceipt" {
             let destinationVC = segue.destination as! ReceiptDetailViewController
+            destinationVC.delegate = self
             if let row = tableView.indexPathForSelectedRow?.row {
                 let receipt = receipts.allReceipts[row]
                 destinationVC.receiptToEdit = receipt

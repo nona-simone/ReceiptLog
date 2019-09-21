@@ -14,9 +14,9 @@ class Receipt: NSObject {
     var purchaseAmount: Double
     var dateOfCreation: Date
     
-    init(storeName: String, purchaseAmount: Double) {
+    init(storeName: String, purchaseAmount: Double, dateOfPurchase: Date) {
         self.storeName = storeName
-        self.dateOfPurchase = Date()
+        self.dateOfPurchase = dateOfPurchase
         self.purchaseAmount = purchaseAmount
         self.dateOfCreation = Date()
         

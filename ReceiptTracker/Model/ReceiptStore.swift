@@ -11,8 +11,8 @@ import Foundation
 class ReceiptStore {
     var allReceipts = [Receipt]()
     
-    @discardableResult func createReceipt() -> Receipt {
-        let newReceipt = Receipt(storeName: "Edit Store", purchaseAmount: 0.00)
+    @discardableResult func createReceipt(_ newItem: Receipt) -> Receipt {
+        let newReceipt = Receipt(storeName: newItem.storeName, purchaseAmount: newItem.purchaseAmount, dateOfPurchase: newItem.dateOfPurchase)
         allReceipts.append(newReceipt)
         return newReceipt
     }

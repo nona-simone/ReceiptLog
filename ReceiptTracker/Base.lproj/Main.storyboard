@@ -57,7 +57,7 @@
                                     <outlet property="purchaseAmtLabel" destination="U33-Vy-5Uq" id="hPV-bG-YNZ"/>
                                     <outlet property="purchaseDateLabel" destination="yET-Ty-DaX" id="QZh-QP-1nI"/>
                                     <outlet property="storeNameLabel" destination="bFn-WG-hL6" id="beo-FF-nfk"/>
-                                    <segue destination="aJf-lS-x9L" kind="show" identifier="editReceipt" id="ewq-yR-Zik"/>
+                                    <segue destination="aJf-lS-x9L" kind="show" identifier="EditReceipt" id="11W-UH-XEN"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -145,10 +145,10 @@
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Entry created 08/30/2019" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H53-Ge-0No">
-                                <rect key="frame" x="100" y="258" width="198" height="21"/>
+                                <rect key="frame" x="100" y="258" width="177" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fBa-QS-Bv0">
@@ -185,7 +185,7 @@
                             <outletCollection property="gestureRecognizers" destination="0uZ-ur-8S3" appends="YES" id="aRU-tv-Jos"/>
                         </connections>
                     </view>
-                    <navigationItem key="navigationItem" id="lSn-Iz-TNp">
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="lSn-Iz-TNp">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="YhX-AQ-Gkj">
                             <connections>
                                 <action selector="cancel" destination="aJf-lS-x9L" id="Cmk-lJ-P9F"/>
@@ -235,6 +235,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="PrR-JN-9Y4"/>
+        <segue reference="11W-UH-XEN"/>
     </inferredMetricsTieBreakers>
 </document>
